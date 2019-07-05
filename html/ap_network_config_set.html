@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Link Garage</title>
+
+
+    <style type='text/css'>
+.btn,body{line-height:1.42857143}a,a:focus,a:hover{text-decoration:none}.btn,.btn-success.active,.btn-success:active,.open>.dropdown-toggle.btn-success{background-image:none}body{color:#333;background-color:#fff}body,html{width:100%;height:100%;margin:0;font-family:Arial;font-size:14px}.page_header{position:absolute;top:25px;width:360px;height:25px;color:#6c7073;text-align:left;left:15px;font-size:24px;font-weight:600}.content_div,.header_div{left:0;width:100%;position:absolute}.header_div{top:0;height:72px;background-color:#000}.content_div{top:72px;height:auto}.content{position:absolute;left:15px}form div{margin-top:10px}.alert-success{color:#3c763d;background-color:#dff0d8;border-color:#d6e9c6}.alert{padding:15px;margin-bottom:20px;border:1px solid transparent;border-radius:4px}a{color:#337ab7}a:focus,a:hover{color:#23527c}a:focus{outline:-webkit-focus-ring-color auto 5px;outline-offset:-2px}.btn{display:inline-block;margin-bottom:0;font-weight:400;text-align:center;vertical-align:middle;-ms-touch-action:manipulation;touch-action:manipulation;cursor:pointer;border:1px solid transparent;white-space:nowrap;padding:6px 12px;font-size:14px;border-radius:4px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.btn.active.focus,.btn.active:focus,.btn.focus,.btn:active.focus,.btn:active:focus,.btn:focus{outline:-webkit-focus-ring-color auto 5px;outline-offset:-2px}.btn.focus,.btn:focus,.btn:hover{color:#333;text-decoration:none}.btn.active,.btn:active{outline:0;background-image:none;-webkit-box-shadow:inset 0 3px 5px rgba(0,0,0,.125);box-shadow:inset 0 3px 5px rgba(0,0,0,.125)}.btn.disabled,.btn[disabled],fieldset[disabled] .btn{cursor:not-allowed;opacity:.65;filter:alpha(opacity=65);-webkit-box-shadow:none;box-shadow:none}a.btn.disabled,fieldset[disabled] a.btn{pointer-events:none}.btn-success{color:#fff;background-color:#5cb85c;border-color:#4cae4c}.btn-success.focus,.btn-success:focus{color:#fff;background-color:#449d44;border-color:#255625}.btn-success.active,.btn-success:active,.btn-success:hover,.open>.dropdown-toggle.btn-success{color:#fff;background-color:#449d44;border-color:#398439}.btn-success.active.focus,.btn-success.active:focus,.btn-success.active:hover,.btn-success:active.focus,.btn-success:active:focus,.btn-success:active:hover,.open>.dropdown-toggle.btn-success.focus,.open>.dropdown-toggle.btn-success:focus,.open>.dropdown-toggle.btn-success:hover{color:#fff;background-color:#398439;border-color:#255625}.btn-success.disabled.focus,.btn-success.disabled:focus,.btn-success.disabled:hover,.btn-success[disabled].focus,.btn-success[disabled]:focus,.btn-success[disabled]:hover,fieldset[disabled] .btn-success.focus,fieldset[disabled] .btn-success:focus,fieldset[disabled] .btn-success:hover{background-color:#5cb85c;border-color:#4cae4c}.btn-success .badge{color:#5cb85c;background-color:#fff}
+
+    </style>
+
+<script>
+var handle = null;
+var ipJsonObj = null;
+var count = 0;
+document.addEventListener('DOMContentLoaded', function() {
+    var m1 = document.getElementById("reboot-btn"), c1 = m1.style;
+    c1.display = "none";
+    var m2 = document.getElementById("back-btn"), c2 = m2.style;
+    c2.display = "none";
+    handle = setInterval(handleIp, 2000);
+}, false);         
+function handleIp() {
+    getIp();
+    if (ipJsonObj != null && ipJsonObj.data != "0.0.0.0") {
+        clearInterval(handle);
+        console.log("stop");
+        document.getElementById('ip').innerHTML = "Your IP Address Will Be " + ipJsonObj.data;
+        var re = document.getElementById("reboot-btn"), rec = re.style;
+        rec.display = "inline-block";
+    }
+    if (count > 10) {
+        document.getElementById('ip').innerHTML = "Failed to Fetch IP Address. Please Go Back and Reset";
+        var b = document.getElementById("back-btn"), bc = b.style;
+        bc.display = "inline-block";
+    }
+    count++;
+}       
+function getIp() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            ipJsonObj = JSON.parse(xhr.responseText);
+        }
+    }
+    xhr.open('GET', '/ip', true);
+    xhr.send();
+}
+</script>
+
+</head>
+
+<body>
+    <div class='header_div'>
+        <div class='page_header'>Link Garage</div>
+    </div>
+    <div class='content_div'>
+        <div class='content'>
+            <h3 class='title'>Network Configuration</h3>
+            <div class="alert alert-success"> <strong>Success! SSID and Password Saved Successfully.</div>
+            <strong><div id="ip" class="alert alert-success">Fetching IP address ...</div></strong>
+            <div>
+                <button id="reboot-btn" class='btn btn-success'><a id='btn_reboot' href='/reboot'>Reboot</a></button>
+                <button id="back-btn" class='btn btn-success'><a id='btn_back' href='/'>Back</a></button>
+            </div>
+        </div>
+</body>
+
+</html>
