@@ -11,6 +11,7 @@ Link Accelerometer is used for measuring the acceleration. Regarding measurement
 All the PCB design files are at https://github.com/linkdynamic/link_accelerometer_pcb
  * Schematic
  https://github.com/linkdynamic/link_accelerometer_pcb/blob/master/info/Schematic.svg
+ 
  * PCB
  https://github.com/linkdynamic/link_accelerometer_pcb/blob/master/info/pcb_front.JPG
  https://github.com/linkdynamic/link_accelerometer_pcb/blob/master/info/pcb_back.JPG
